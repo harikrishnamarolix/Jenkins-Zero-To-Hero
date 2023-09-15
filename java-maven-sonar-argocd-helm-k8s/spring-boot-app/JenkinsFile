@@ -1,5 +1,8 @@
 pipeline {
   agent {
+  envirnoment {
+     DOCKERHUB_CREDENTIALS = credentials ('dockerhub_id')  
+}
     docker {
       image 'abhishekf5/maven-abhishek-docker-agent:v1'
       args '--user root -v /var/run/docker.sock:/var/run/docker.sock' // mount Docker socket to access the host's Docker daemon
@@ -30,23 +33,16 @@ pipeline {
         }
       }
     }
-    stage('Build and Push Docker Image') {
-      environment {
-       // DOCKER_IMAGE = "harimarolix:${BUILD_NUMBER}"
-       // DOCKERFILE_LOCATION = "java-maven-sonar-argocd-helm-k8s/spring-boot-app/Dockerfile"
-        DOCKERHUB_CREDENTIALS = credentials ('dockerhub_id')
-      }
-       stage('Build Docker Image') {
+     stage('Build Docker Image') {
             steps {
                 sh 'docker build -t hari .'
             }
         }
-         stage('login to dockerhub') {
+      stage('login to dockerhub') {
             steps{
                 sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
             }
         }
-    }
     stage('Update Deployment File') {
         environment {
             GIT_REPO_NAME = "Jenkins-Zero-To-Hero"
