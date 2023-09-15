@@ -50,7 +50,7 @@
      <dependency>
            <groupId>org.springframework</groupId>
            <artifactId>spring-webmvc</artifactId>
-           <version>${org.springframework.version}</version>
+           <version>3.0.5.RELEASE</version>
      </dependency>
 
     </dependencies>
